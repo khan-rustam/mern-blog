@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import userRouter from "./routes/user.routes.js";
 
 dotenv.config();
 const app = express();
@@ -8,10 +9,12 @@ const app = express();
 //connection to mongoDB database --------------
 mongoose
   .connect(
-      "mongodb+srv://mern-blog:mern-blog@cluster0.gxs1bat.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://mern-blog:mern-blog@cluster0.gxs1bat.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => console.log("Connected successfully to MongoDB"))
   .catch((err) => console.log(err, "Failed to connect to MongoDB"));
+
+app.use("/api/user", userRouter);
 
 //Server runnning on PORT - 3000 --------------
 const PORT = 3000;
