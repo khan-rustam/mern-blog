@@ -18,13 +18,13 @@ mongoose
   .then(() => console.log("Connected successfully to MongoDB"))
   .catch((err) => console.log(err, "Failed to connect to MongoDB"));
 
-app.use("/api/test", (req, res) => {
-  return res
-    .status(200)
-    .json({ success: true, message: "API Working Succesfully" });
-});
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(statusCode).json({ success: false, message: message });
+});
 
 //Server runnning on PORT - 3000 --------------
 const PORT = 3000;

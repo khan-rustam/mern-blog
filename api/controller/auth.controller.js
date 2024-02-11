@@ -1,7 +1,8 @@
 import User from "../models/user.model.js";
-import bcrypt from "bcryptjs";
+import bcryptjs from "bcryptjs";
+import { errorHandler } from "../utils/error.js";
 
-export const SignUp = async (req, res) => {
+export const SignUp = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   try {
@@ -12,11 +13,12 @@ export const SignUp = async (req, res) => {
       !email === "" ||
       !username === "" ||
       !password === ""
-    )
-      return res.status(400).json({ message: "Please fill complete details!" });
+    ) {
+      next(errorHandler(400, "Please fill complete details!"));
+    }
 
-    const salt = bcrypt.genSaltSync(10);
-    const hashPassword = bcrypt.hashSync(password, salt);
+    const salt = bcryptjs.genSaltSync(10);
+    const hashPassword = bcryptjs.hashSync(password, salt);
 
     const user = await User.create({ username, email, password: hashPassword });
 
@@ -26,6 +28,6 @@ export const SignUp = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
