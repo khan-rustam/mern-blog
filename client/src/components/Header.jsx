@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Button, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { Moon, Search } from "lucide-react";
@@ -12,7 +13,7 @@ export default function Header() {
         className=" self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
       >
         <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
-          Vista
+          Vista's
         </span>
         Blog
       </Link>
@@ -32,7 +33,9 @@ export default function Header() {
           <Moon className="w-5" />
         </Button>
         <Link to={"/sign-in"}>
-          <Button gradientDuoTone={"purpleToBlue"} outline>Sign In</Button>
+          <Button gradientDuoTone={"purpleToBlue"} outline>
+            Sign In
+          </Button>
         </Link>
         <Navbar.Toggle />
       </div>
