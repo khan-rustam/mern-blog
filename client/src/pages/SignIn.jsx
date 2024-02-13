@@ -3,12 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -16,36 +22,30 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.password || !formData.email) {
-      toast.error("Failed to Sign In");
-      return setErrorMessage("Please fill your complete details!");
+    if (!formData.email || !formData.password) {
+      toast.error("Please fill all the fields");
+      return dispatch(signInFailure("Please fill all the fields"));
     }
-
     try {
-      setLoading(true);
-      setErrorMessage(null);
-
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
-
       if (data.success === false) {
+        dispatch(signInFailure(data.message));
         toast.error(data.message);
-        setErrorMessage(data.message);
       }
+
       if (res.ok) {
-        toast.success("Sign In Success.");
+        dispatch(signInSuccess(data));
+        toast.success("Sign In successfully");
         navigate("/");
       }
-      setLoading(false);
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(signInFailure(error.message));
       toast.error(error.message);
     }
   };
