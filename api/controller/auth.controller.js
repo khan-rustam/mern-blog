@@ -18,6 +18,9 @@ export const SignUp = async (req, res, next) => {
       next(errorHandler(400, "Please fill complete details!"));
     }
 
+    const existUser = await User.findOne({ email });
+    if (existUser) next(errorHandler(400, "User already exists!"));
+
     const salt = bcryptjs.genSaltSync(10);
     const hashPassword = bcryptjs.hashSync(password, salt);
 

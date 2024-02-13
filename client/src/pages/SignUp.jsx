@@ -35,13 +35,13 @@ export default function SignUp() {
       const data = await res.json();
 
       if (data.success === false) {
-        toast.error("Failed to Sign Up");
+        toast.error(data.message);
         setErrorMessage(data.message);
-      } else {
+      } else if (res.ok) {
         toast.success("Sign Up Success");
-        if (res.ok) navigate("/sign-in");
-        setLoading(false);
+        navigate("/sign-in");
       }
+      setLoading(false);
     } catch (error) {
       setErrorMessage(error.message);
       setLoading(false);
