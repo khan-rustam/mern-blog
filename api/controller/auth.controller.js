@@ -71,7 +71,7 @@ export const SignIn = async (req, res, next) => {
 };
 
 export const googleAuth = async (req, res, next) => {
-  const { email, name, photoUrl } = req.body;
+  const { email, name, photo } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -95,7 +95,7 @@ export const googleAuth = async (req, res, next) => {
           Math.random().toString(9).slice(-4),
         email: email,
         password: hashPassword,
-        photo: photoUrl,
+        profilePicture: photo,
       });
        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
        const { password, ...rest } = newUser._doc;

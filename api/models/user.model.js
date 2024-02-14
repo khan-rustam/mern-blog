@@ -15,10 +15,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    photo: {
+    profilePicture: {
       type: String,
       default:
-        "https://static.vecteezy.com/system/resources/previews/026/619/142/non_2x/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg",
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
     },
   },
   { timestamps: true }

@@ -1,10 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Button, Navbar, TextInput } from "flowbite-react";
+import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { Moon, Search } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const path = useLocation().pathname;
+  const { currentUser } = useSelector((state) => state.user);
 
   return (
     <Navbar className="border-b-2">
@@ -25,20 +27,53 @@ export default function Header() {
           className="hidden lg:inline"
         />
       </form>
+
       <Button className="self-center w-12 h-10 lg:hidden" color="gray" pill>
         <Search className="w-5" />
       </Button>
+
       <div className="flex gap-2 md:order-2">
         <Button className="self-center hidden sm:inline" color="gray" pill>
           <Moon className="w-5" />
         </Button>
-        <Link to={"/sign-in"}>
-          <Button gradientDuoTone={"purpleToBlue"} outline>
-            Sign In
-          </Button>
-        </Link>
+
+        {currentUser ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar
+                alt="User"
+                img={currentUser.rest.profilePicture}
+                rounded
+              />
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">
+                @{currentUser.rest.username}
+              </span>
+              <span className="block text-sm font-medium truncate">
+                {currentUser.rest.email}
+              </span>
+            </Dropdown.Header>
+            <Link to={"/dashboard?tab=profile"}>
+              <Dropdown.Item>Profile</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item>Sign Out</Dropdown.Item>
+            </Link>
+          </Dropdown>
+        ) : (
+          <Link to={"/sign-in"}>
+            <Button gradientDuoTone={"purpleToBlue"} outline>
+              Sign In
+            </Button>
+          </Link>
+        )}
+
         <Navbar.Toggle />
       </div>
+
       <Navbar.Collapse>
         <Navbar.Link active={path === "/"} as={"div"}>
           <Link to={"/"}>Home</Link>
