@@ -3,12 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import OAuth from "../components/OAuth";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -19,12 +27,11 @@ export default function SignUp() {
 
     if (!formData.username || !formData.password || !formData.email) {
       toast.error("Failed to Sign Up");
-      return setErrorMessage("Please fill your complete details!");
+      return dispatch(signInFailure("Please fill your complete details!"));
     }
 
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(signInStart());
 
       const res = await fetch("/api/auth/signup", {
         method: "POST",
@@ -36,16 +43,17 @@ export default function SignUp() {
 
       if (data.success === false) {
         toast.error(data.message);
-        setErrorMessage(data.message);
-      } else if (res.ok) {
+        dispatch(signInFailure(data.message));
+      }
+
+      if (res.ok) {
+        dispatch(signInSuccess(data));
         toast.success("Sign Up Success");
         navigate("/sign-in");
       }
-      setLoading(false);
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
-      toast.error("Failed to Sign Up");
+      dispatch(signInFailure(error.message));
+      toast.error(error.message);
     }
   };
 
@@ -80,6 +88,7 @@ export default function SignUp() {
                 onChange={handleChange}
               />
             </div>
+
             <div>
               <Label value="Your email" />
               <TextInput
@@ -89,6 +98,7 @@ export default function SignUp() {
                 onChange={handleChange}
               />
             </div>
+
             <div>
               <Label value="Your password" />
               <TextInput
@@ -98,6 +108,7 @@ export default function SignUp() {
                 onChange={handleChange}
               />
             </div>
+
             <Button
               gradientDuoTone={"purpleToPink"}
               type="submit"
@@ -112,13 +123,16 @@ export default function SignUp() {
                 "Sign Up"
               )}
             </Button>
+            <OAuth />
           </form>
+
           <div className=" flex gap-2 text-sm mt-5">
             <span>Have an account?</span>
             <Link to={"/sign-in"} className="text-blue-500">
               Sign In
             </Link>
           </div>
+
           {errorMessage && (
             <Alert color={"failure"} className="mt-5">
               {errorMessage}
