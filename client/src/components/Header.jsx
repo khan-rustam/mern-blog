@@ -1,12 +1,15 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
-import { Moon, Search } from "lucide-react";
-import { useSelector } from "react-redux";
+import { Moon, Search, Sun } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
 
 export default function Header() {
   const path = useLocation().pathname;
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const { theme } = useSelector((state) => state.theme);
 
   return (
     <Navbar className="border-b-2">
@@ -33,8 +36,17 @@ export default function Header() {
       </Button>
 
       <div className="flex gap-2 md:order-2">
-        <Button className="self-center hidden sm:inline" color="gray" pill>
-          <Moon className="w-5" />
+        <Button
+          className="self-center hidden sm:inline"
+          color="gray"
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === "dark" ? (
+            <Sun className="w5" />
+          ) : (
+            <Moon className="w-5" />
+          )}
         </Button>
 
         {currentUser ? (
