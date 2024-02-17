@@ -25,25 +25,25 @@ export default function Header() {
       <form>
         <TextInput
           type="text"
-          placeholder="Search"
+          placeholder="Search..."
           rightIcon={Search}
           className="hidden lg:inline"
         />
       </form>
 
-      <Button className="self-center w-12 h-10 lg:hidden" color="gray" pill>
+      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <Search className="w-5" />
       </Button>
 
       <div className="flex gap-2 md:order-2">
         <Button
-          className="self-center hidden sm:inline"
+          className="hidden sm:inline"
           color="gray"
           pill
           onClick={() => dispatch(toggleTheme())}
         >
           {theme === "dark" ? (
-            <Sun className="w5" />
+            <Sun className="w-5" />
           ) : (
             <Moon className="w-5" />
           )}
