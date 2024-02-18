@@ -17,10 +17,8 @@ export default function Dashboard() {
       <div className=" md:w-56">
         {/* Sidebar */} <DashSidebar />{" "}
       </div>
-      <div className="">
         {/* profile & Extra */}
         {tab === "profile" && <DashProfile />}
-      </div>
     </div>
   );
 }
