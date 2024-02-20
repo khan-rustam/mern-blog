@@ -13,12 +13,12 @@ app.use(cookieParser())
 //connection to mongoDB database --------------
 mongoose
   .connect(
-    "mongodb://localhost:27017",
-    { dbName: "mern-blog" }
-    // "mongodb+srv://mern-blog:mern-blog@cluster0.gxs1bat.mongodb.net/?retryWrites=true&w=majority"
+    'mongodb+srv://mern-blog:mern-blog@cluster0.selnfqf.mongodb.net/?retryWrites=true&w=majority',
+    { dbName: 'mern-blog' }
+    // "mongodb+srv://mern-blog:mern-blog@cluster0.selnfqf.mongodb.net/?retryWrites=true&w=majority"
   )
-  .then(() => console.log("Connected successfully to MongoDB"))
-  .catch((err) => console.log(err, "Failed to connect to MongoDB"));
+  .then(() => console.log('Connected successfully to MongoDB'))
+  .catch((err) => console.log(err, 'Failed to connect to MongoDB'));
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);

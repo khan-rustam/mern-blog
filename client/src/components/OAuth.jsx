@@ -32,7 +32,7 @@ export default function OAuth() {
 
       const data = await res.json();
       if (res.ok) {
-        toast.success(data.message);
+        toast.success("Sign in success");
         dispatch(signInSuccess(data));
         navigate("/");
       }
