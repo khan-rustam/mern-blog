@@ -16,6 +16,7 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  signoutSuccess,
   updateFailure,
   updateStart,
   updateSuccess,
@@ -35,7 +36,6 @@ export default function DashProfile() {
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
   const [showModel, setShowModel] = useState(false);
-
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
@@ -156,8 +156,26 @@ export default function DashProfile() {
         toast.success(data);
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
       dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess(data));
+        toast.success(data);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -199,7 +217,7 @@ export default function DashProfile() {
           )}
 
           <img
-            src={imageFileUrl || currentUser.profilePicture}
+            src={ currentUser.profilePicture}
             alt="user"
             className={`rounded-full w-full h-full object-cover border-8 border-[lightgray] ${
               imageFileUploadProgress &&
@@ -245,7 +263,9 @@ export default function DashProfile() {
         <span className="cursor-pointer" onClick={() => setShowModel(true)}>
           Delete Account
         </span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span className="cursor-pointer" onClick={handleSignOut}>
+          Sign Out
+        </span>
       </div>
 
       {updateUserSuccess && (

@@ -77,7 +77,7 @@ export const googleAuth = async (req, res, next) => {
       res
         .status(200)
         .cookie("access_token", token, { httpOnly: true })
-        .json({ success: true, message: "Sign In Successfully!!", rest });
+        .json( rest );
     } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +

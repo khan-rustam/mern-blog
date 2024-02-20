@@ -4,6 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Moon, Search, Sun } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
+import { signoutSuccess } from "../redux/user/userSlice";
+import toast from "react-hot-toast";
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -11,6 +13,23 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
 
+    const handleSignOut = async () => {
+      try {
+        const res = await fetch("/api/user/signout", {
+          method: "POST",
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          console.log(data.message);
+        } else {
+          dispatch(signoutSuccess(data));
+          toast.success(data);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
 
   return (
     <Navbar className="border-b-2">
@@ -55,17 +74,11 @@ export default function Header() {
             arrowIcon={false}
             inline
             label={
-              <Avatar
-                alt="User"
-                img={currentUser.profilePicture}
-                rounded
-              />
+              <Avatar alt="User" img={currentUser.profilePicture} rounded />
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm">
-                @{currentUser.username}
-              </span>
+              <span className="block text-sm">@{currentUser.username}</span>
               <span className="block text-sm font-medium truncate">
                 {currentUser.email}
               </span>
@@ -73,7 +86,7 @@ export default function Header() {
             <Link to={"/dashboard?tab=profile"}>
               <Dropdown.Item>Profile</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item>Sign Out</Dropdown.Item>
+              <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
             </Link>
           </Dropdown>
         ) : (
