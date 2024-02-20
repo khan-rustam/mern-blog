@@ -26,11 +26,7 @@ export const SignUp = async (req, res, next) => {
 
     const user = await User.create({ username, email, password: hashPassword });
 
-    return res.status(201).json({
-      success: true,
-      message: "User Created Successfully",
-      user,
-    });
+    return res.status(201).json("User Created Successfully");
   } catch (error) {
     next(error);
   }
@@ -97,13 +93,12 @@ export const googleAuth = async (req, res, next) => {
         password: hashPassword,
         profilePicture: photo,
       });
-       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
-       const { password, ...rest } = newUser._doc;
-       res
-         .status(200)
-         .cookie("access_token", token, { httpOnly: true })
-         .json({ success: true, message: "Sign Up Successfully!!", rest });
-
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const { password, ...rest } = newUser._doc;
+      res
+        .status(200)
+        .cookie("access_token", token, { httpOnly: true })
+        .json(rest);
     }
   } catch (error) {
     next(error);

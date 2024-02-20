@@ -28,8 +28,15 @@ export const updateUser = async (req, res, next) => {
     }
   }
 
-  if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
-    return next(errorHandler(400, "Username can only contain letters and numbers"));
+
+  const usernameRegex = /^[a-zA-Z0-9]+$/;
+
+  const validUsername = usernameRegex.test(req.body.username);
+
+  if (!validUsername) {
+    return next(
+      errorHandler(400, "Username can only contain letters and numbers")
+    );
   }
 
   try {

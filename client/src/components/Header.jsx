@@ -11,6 +11,7 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
 
+
   return (
     <Navbar className="border-b-2">
       <Link
@@ -56,17 +57,17 @@ export default function Header() {
             label={
               <Avatar
                 alt="User"
-                img={currentUser.rest.profilePicture}
+                img={currentUser.profilePicture}
                 rounded
               />
             }
           >
             <Dropdown.Header>
               <span className="block text-sm">
-                @{currentUser.rest.username}
+                @{currentUser.username}
               </span>
               <span className="block text-sm font-medium truncate">
-                {currentUser.rest.email}
+                {currentUser.email}
               </span>
             </Dropdown.Header>
             <Link to={"/dashboard?tab=profile"}>
