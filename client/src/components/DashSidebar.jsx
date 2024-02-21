@@ -1,26 +1,27 @@
-import { Sidebar } from "flowbite-react";
-import { useEffect, useState } from "react";
-import { HiUser, HiArrowSmRight } from "react-icons/hi";
-import { Link, useLocation } from "react-router-dom";
-import { signoutSuccess } from "../redux/user/userSlice";
-import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { Sidebar } from 'flowbite-react';
+import { useEffect, useState } from 'react';
+import { HiUser, HiArrowSmRight } from 'react-icons/hi';
+import { Link, useLocation } from 'react-router-dom';
+import { signoutSuccess } from '../redux/user/userSlice';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function DashSidebar() {
+  const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
-  const [tab, setTab] = useState("");
-  const dispatch = useDispatch()
+  const [tab, setTab] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const tabFromUrl = urlParams.get("tab");
+    const tabFromUrl = urlParams.get('tab');
     if (tabFromUrl) setTab(tabFromUrl);
   }, [location.search]);
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
+      const res = await fetch('/api/user/signout', {
+        method: 'POST',
       });
       const data = await res.json();
 
@@ -35,17 +36,15 @@ export default function DashSidebar() {
     }
   };
 
-
-
   return (
     <Sidebar className=" w-full md:w-56">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Link to={"/dashboard?tab=profile"}>
+          <Link to={'/dashboard?tab=profile'}>
             <Sidebar.Item
-              active={tab === "profile"}
+              active={tab === 'profile'}
               icon={HiUser}
-              label={"User"}
+              label={currentUser.isAdmin ? 'Admin' : 'User'}
               labelColor="dark"
               as="div"
             >
@@ -54,7 +53,7 @@ export default function DashSidebar() {
           </Link>
           <Sidebar.Item
             icon={HiArrowSmRight}
-            className={" cursor-pointer"}
+            className={' cursor-pointer'}
             onClick={handleSignOut}
           >
             Sign Out

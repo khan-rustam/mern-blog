@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
-import { Alert, Button, Modal, TextInput, Toast } from "flowbite-react";
-import { useEffect, useRef, useState } from "react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useSelector } from "react-redux";
-import { toast } from "react-hot-toast";
+import { Alert, Button, Modal, TextInput, Toast } from 'flowbite-react';
+import { useEffect, useRef, useState } from 'react';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
-} from "firebase/storage";
+} from 'firebase/storage';
 import {
   deleteUserFailure,
   deleteUserStart,
@@ -20,11 +21,11 @@ import {
   updateFailure,
   updateStart,
   updateSuccess,
-} from "../redux/user/userSlice";
-import { app } from "../firebase";
-import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import { useDispatch } from "react-redux";
+} from '../redux/user/userSlice';
+import { app } from '../firebase';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { useDispatch } from 'react-redux';
 
 export default function DashProfile() {
   const { currentUser, error, loading } = useSelector((state) => state.user);
@@ -73,7 +74,7 @@ export default function DashProfile() {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
     uploadTask.on(
-      "state_changed",
+      'state_changed',
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -82,7 +83,7 @@ export default function DashProfile() {
       },
       (error) => {
         setImageFileUploadError(
-          "Could not upload image (File must be less than 2MB)"
+          'Could not upload image (File must be less than 2MB)'
         );
         setImageFileUploadProgress(null);
         setImageFile(null);
@@ -107,7 +108,7 @@ export default function DashProfile() {
     e.preventDefault();
     setUpdateUserError(null);
     if (Object.keys(formData).length === 0) {
-      setUpdateUserError("No changes were made!!");
+      setUpdateUserError('No changes were made!!');
       return;
     }
 
@@ -121,8 +122,8 @@ export default function DashProfile() {
     try {
       dispatch(updateStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
@@ -132,7 +133,7 @@ export default function DashProfile() {
         setUpdateUserError(data.message);
       } else {
         dispatch(updateSuccess(data));
-        setUpdateUserSuccess("Congratulations, Profile updated successfully.");
+        setUpdateUserSuccess('Congratulations, Profile updated successfully.');
       }
     } catch (error) {
       dispatch(updateFailure(error.message));
@@ -145,7 +146,7 @@ export default function DashProfile() {
     try {
       dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
       const data = await res.json();
 
@@ -163,8 +164,8 @@ export default function DashProfile() {
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
+      const res = await fetch('/api/user/signout', {
+        method: 'POST',
       });
       const data = await res.json();
 
@@ -201,9 +202,9 @@ export default function DashProfile() {
               strokeWidth={5}
               styles={{
                 root: {
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
+                  width: '100%',
+                  height: '100%',
+                  position: 'absolute',
                   top: 0,
                   left: 0,
                 },
@@ -217,12 +218,12 @@ export default function DashProfile() {
           )}
 
           <img
-            src={ currentUser.profilePicture}
+            src={currentUser.profilePicture}
             alt="user"
             className={`rounded-full w-full h-full object-cover border-8 border-[lightgray] ${
               imageFileUploadProgress &&
               imageFileUploadProgress < 100 &&
-              "opacity-60"
+              'opacity-60'
             }`}
           />
         </div>
@@ -255,8 +256,15 @@ export default function DashProfile() {
           outline
           disabled={loading || imageFileUploading}
         >
-          {loading ? "Loading..." : "Update"}
+          {loading ? 'Loading...' : 'Update'}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={'/create-post'}>
+            <Button type="button" gradientDuoTone="purpleToPink" className=" w-full">
+              Create Post
+            </Button>
+          </Link>
+        )}
       </form>
 
       <div className="text-red-500 flex justify-between mt-5">
@@ -269,17 +277,17 @@ export default function DashProfile() {
       </div>
 
       {updateUserSuccess && (
-        <Alert color={"success"} className=" mt-5">
+        <Alert color={'success'} className=" mt-5">
           {updateUserSuccess}
         </Alert>
       )}
       {updateUserError && (
-        <Alert color={"failure"} className=" mt-5">
+        <Alert color={'failure'} className=" mt-5">
           {updateUserError}
         </Alert>
       )}
       {error && (
-        <Alert color={"failure"} className=" mt-5">
+        <Alert color={'failure'} className=" mt-5">
           {error}
         </Alert>
       )}
@@ -287,7 +295,7 @@ export default function DashProfile() {
         show={showModel}
         onClose={() => setShowModel(false)}
         popup
-        size={"md"}
+        size={'md'}
       >
         <Modal.Header />
         <Modal.Body>
