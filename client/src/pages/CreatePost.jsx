@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 export default function CreatePost() {
   const [file, setFile] = useState(null);
@@ -21,7 +22,7 @@ export default function CreatePost() {
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleUploadImage = async () => {
     try {
@@ -77,6 +78,7 @@ export default function CreatePost() {
 
       if (res.ok) {
         setPublishError(null);
+        toast.success('Post created successfully');
         navigate(`/post/${data.slug}`);
       }
     } catch (error) {
@@ -118,7 +120,8 @@ export default function CreatePost() {
           />
           <Button
             type='button'
-            gradientD uoTone='purpleToBlue'
+            gradientD
+            uoTone='purpleToBlue'
             size='sm'
             outline
             onClick={handleUploadImage}

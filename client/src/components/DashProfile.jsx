@@ -258,6 +258,7 @@ export default function DashProfile() {
         >
           {loading ? 'Loading...' : 'Update'}
         </Button>
+        
         {currentUser.isAdmin && (
           <Link to={'/create-post'}>
             <Button type="button" gradientDuoTone="purpleToPink" className=" w-full">
