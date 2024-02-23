@@ -1,6 +1,7 @@
 import { errorHandler } from '../utils/error.js';
 import Post from '../models/post.model.js';
 
+
 export const createPost = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(403, 'You are not allowed to create a post'));
@@ -27,6 +28,7 @@ export const createPost = async (req, res, next) => {
     next(error);
   }
 };
+
 
 export const getPosts = async (req, res, next) => {
   try {
@@ -76,6 +78,7 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
+
 export const deletePost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(errorHandler(403, 'You are not allowed to delete this post'));
@@ -88,6 +91,7 @@ export const deletePost = async (req, res, next) => {
     next(error);
   }
 };
+
 
 export const updatePost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {

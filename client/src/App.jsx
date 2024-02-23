@@ -15,9 +15,7 @@ import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute';
 import UpdatePost from './pages/UpdatePost';
 import PostPage from './pages/PostPage';
 
-
 const App = () => {
-  
   return (
     <Router>
       <Header />
