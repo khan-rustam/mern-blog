@@ -11,7 +11,8 @@ export default function PostPage() {
 
   useEffect(() => {
     const fetchPost = async () => {
-      try {
+      try { 
+        
         setLoading(true);
         const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
