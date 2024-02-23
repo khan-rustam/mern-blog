@@ -29,24 +29,24 @@ export default function DashUsers() {
   };
 
   const handleDeleteUser = async () => {
-    // setShowModel(false);
-    // try {
-    //   const res = await fetch(
-    //     `/api/post/delete/${userIdToDelete}/${currentUser._id}`,
-    //     { method: 'DELETE' }
-    //   );
-    //   const data = await res.json();
-    //   if (!res.ok) {
-    //     console.log(data.message);
-    //   } else {
-    //     setUsers((prev) =>
-    //       prev.filter((post) => post._id !== userIdToDelete)
-    //     );
-    //     toast.success(data);
-    //   }
-    // } catch (error) {
-    //   console.log(error.message);
-    // }
+    setShowModel(false);
+    try {
+      const res = await fetch(
+        `/api/user/delete/${userIdToDelete}`,
+        { method: 'DELETE' }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setUsers((prev) =>
+          prev.filter((user) => user._id !== userIdToDelete)
+        );
+        toast.success(data);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   useEffect(() => {
@@ -56,7 +56,6 @@ export default function DashUsers() {
         const data = await res.json();
 
         if (res.ok) {
-          console.log(data.users);
           setUsers(data.users);
           if (data.users.length < 9) setShowMore(false);
         }
