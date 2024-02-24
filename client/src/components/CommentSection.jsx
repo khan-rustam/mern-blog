@@ -9,6 +9,7 @@ export default function CommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState('');
   const [commentError, setCommentError] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,6 +45,7 @@ export default function CommentSection({ postId }) {
 
   return (
     <div className='max-w-2xl mx-auto w-full p-3'>
+        
       {currentUser ? (
         <div className='flex items-center gap-1 my-5 text-gray-500 text-sm'>
           <p>Sign In as:</p>{' '}
@@ -69,6 +71,7 @@ export default function CommentSection({ postId }) {
           </Link>
         </div>
       )}
+
       {currentUser && (
         <>
           <form
