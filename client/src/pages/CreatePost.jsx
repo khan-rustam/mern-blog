@@ -60,6 +60,7 @@ export default function CreatePost() {
       console.log(error);
     }
   };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
