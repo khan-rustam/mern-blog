@@ -108,9 +108,16 @@ export default function CreatePost() {
             }
           >
             <option value='uncategorized'>Select a category</option>
+            <option value='html'>HTML</option>
+            <option value='css'>CSS</option>
+            <option value='figma'>Figma</option>
+            <option value='react'>React.js</option>
+            <option value='node'>Node.js</option>
+            <option value='next'>Next.js</option>
+            <option value='express'>Express.js</option>
+            <option value='mongo'>Mongoose</option>
             <option value='javascript'>JavaScript</option>
-            <option value='reactjs'>React.js</option>
-            <option value='nextjs'>Next.js</option>
+            <option value='typescript'>TypeScript</option>
           </Select>
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3'>
